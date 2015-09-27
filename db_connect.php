@@ -1,21 +1,26 @@
 <?php
+$link = mysql_connect('localhost','root','');
+if (!link) {
+   die('接続失敗です。'.mysql_error());
+} else {
+   echo '接続に成功しました。'; 
+}
 
-// try {
-//     $pdo = new PDO('mysql:host=localhost;dbname=team8;charset=utf8','root','',
-//     array(PDO::ATTR_EMULATE_PREPARES => false));
-// } catch (PDOException $e) {
-//     exit('データベース接続失敗。'.$e->getMessage());
-// }
+$db_selected = mysql_select_db('team8',$link);
+if (!$db_selected) {
+    die('データベース選択失敗です。'.msql_error());
+} else {
+    echo 'データーベースの選択に成功しました。';
+}
 
-// echo $e;
+mysql_set_charset('utf8');
 
-//MySQLサーバに接続します
-$DBSERVER = "localhost";
-$DBUSER = "root";
-$DBPASSWORD = "";
-$con = mysql_connect($DBSERVER, $DBUSER, $DBPASSWORD);
-//MySQL読み込み時の文字コードを設定
-mysql_query("set names utf8");
-//データベースを選択します
-$DBNAME = "team8";
-$selectdb = mysql_select_db($DBNAME, $con);
+$result = mysql_query('SELECT id,login_id FROM user');
+if (!$result) {
+    die('クエリーが失敗しました。'.mysql_error());
+}
+
+while ($row = mysql_fetch_assoc($result)) {
+    print('id='.$row['id']);
+    print(',name='.$row['login_id']);
+}
